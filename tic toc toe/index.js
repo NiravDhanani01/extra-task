@@ -21,6 +21,7 @@ box.forEach((item) => {
             document.querySelector('.result').innerText = `Player X Turn `
             turn = false;
             cnt++
+            console.log(cnt);
         } else {
             item.innerText = "X"
             item.style.color = "blue"
@@ -28,6 +29,7 @@ box.forEach((item) => {
             document.querySelector('.result').innerText = `Player O Turn `
             turn = true;
             cnt++
+            console.log(cnt);
         }
 
         for (let i of winningPettern) {
@@ -42,8 +44,8 @@ box.forEach((item) => {
                         b.disabled = true
                     }
                 } else{
-                    if(cnt >= 8 && val1 === val2 && val2 === val3){
-                        document.querySelector('.result').innerText = `Winner is player ${item.innerText} `
+                    if(box.disabled && cnt >= 9 && val1 != val2 && val2 != val3){
+                        document.querySelector('.result').innerText = `Game Draw Try Again Letter `
                     } 
                 }
             }   
@@ -62,3 +64,4 @@ const ResetGame = () => {
         document.querySelector('.result').innerText = ""
     }
 }
+
