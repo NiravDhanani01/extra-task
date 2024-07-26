@@ -36,6 +36,8 @@ box.forEach((item) => {
                 item.style.color = "red";
                 item.disabled = true;
                 valX.style.display = "none"
+                valX.style.display = "none"
+                player.style.display = "none"
                 document.querySelector('.result').innerText = `Player X Turn`;
                 turn = false;
                 cnt++;
