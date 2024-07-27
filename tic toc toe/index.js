@@ -1,8 +1,8 @@
 let box = document.querySelectorAll("#box");
-let valX = document.querySelector("#valX");
-let player = document.querySelector("#player");
-let selectPlayer = document.querySelector("#selectPlayer");
-let selectPlayer2 = document.querySelector("#selectPlayer2");
+let valueX = document.querySelector("#valX");
+let choosePlayer = document.querySelector("#player");
+let selectPlayerOne = document.querySelector("#selectPlayer");
+let selectPlayerTwo = document.querySelector("#selectPlayer2");
 
 let turnO = true;
 let cnt = 0;
@@ -12,19 +12,19 @@ let winningPatterns = [
     [0, 4, 8], [2, 4, 6]
 ];
 
-valX.addEventListener("click", () => {
-    if (valX.checked) {
+valueX.addEventListener("click", () => {
+    if (valueX.checked) {
         turnO = false;
-        valX.style.display = "none"
-        player.style.display = "none"
-        selectPlayer.innerHTML = "X"
-        selectPlayer2.innerHTML = "O"
+        valueX.style.display = "none"
+        choosePlayer.style.display = "none"
+        selectPlayerOne.innerHTML = "X"
+        selectPlayerTwo.innerHTML = "O"
     }
 });
 
 function setDefaultPlayer() {
-    selectPlayer.innerHTML = "O"
-    selectPlayer2.innerHTML = "X"
+    selectPlayerOne.innerHTML = "O"
+    selectPlayerTwo.innerHTML = "X"
 }
 setDefaultPlayer()
 
@@ -35,9 +35,9 @@ box.forEach((item) => {
                 item.innerText = "O";
                 item.style.color = "red";
                 item.disabled = true;
-                valX.style.display = "none"
-                valX.style.display = "none"
-                player.style.display = "none"
+                valueX.style.display = "none"
+                valueX.style.display = "none"
+                choosePlayer.style.display = "none"
                 document.querySelector('.result').innerText = `Player X Turn`;
                 turnO = false;
                 cnt++;
@@ -82,8 +82,10 @@ const resetGame = () => {
         b.disabled = false;
     }
     turnO = true;
-    valX.checked = false;
-    valX.style.display = "block"
+    valueX.checked = false;
+    setDefaultPlayer()
+    valueX.style.display = "block"
+    choosePlayer.style.display = "block"
     cnt = 0;
     document.querySelector('.result').innerText = "";
 };
