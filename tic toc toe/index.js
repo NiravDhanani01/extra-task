@@ -4,7 +4,7 @@ let player = document.querySelector("#player");
 let selectPlayer = document.querySelector("#selectPlayer");
 let selectPlayer2 = document.querySelector("#selectPlayer2");
 
-let turn = true;
+let turnO = true;
 let cnt = 0;
 let winningPatterns = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -14,7 +14,7 @@ let winningPatterns = [
 
 valX.addEventListener("click", () => {
     if (valX.checked) {
-        turn = false;
+        turnO = false;
         valX.style.display = "none"
         player.style.display = "none"
         selectPlayer.innerHTML = "X"
@@ -22,16 +22,16 @@ valX.addEventListener("click", () => {
     }
 });
 
-function defaultplayer() {
+function setDefaultPlayer() {
     selectPlayer.innerHTML = "O"
     selectPlayer2.innerHTML = "X"
 }
-defaultplayer()
+setDefaultPlayer()
 
 box.forEach((item) => {
     item.addEventListener("click", () => {
         if (item.innerText === "") {
-            if (turn) {
+            if (turnO) {
                 item.innerText = "O";
                 item.style.color = "red";
                 item.disabled = true;
@@ -39,14 +39,14 @@ box.forEach((item) => {
                 valX.style.display = "none"
                 player.style.display = "none"
                 document.querySelector('.result').innerText = `Player X Turn`;
-                turn = false;
+                turnO = false;
                 cnt++;
             } else {
                 item.innerText = "X";
                 item.style.color = "blue";
                 item.disabled = true;
                 document.querySelector('.result').innerText = `Player O Turn`;
-                turn = true;
+                turnO = true;
                 cnt++;
             }
 
@@ -76,12 +76,12 @@ const disableAllBoxes = () => {
     }
 };
 
-const ResetGame = () => {
+const resetGame = () => {
     for (let b of box) {
         b.innerHTML = "";
         b.disabled = false;
     }
-    turn = true;
+    turnO = true;
     valX.checked = false;
     valX.style.display = "block"
     cnt = 0;
