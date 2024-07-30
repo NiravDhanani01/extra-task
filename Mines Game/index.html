@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mines game</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        margin: 25px;
+    }
+    .minesArea{
+        display:flex;
+        flex-wrap: wrap;
+    }
+    .minesArea .mineBtn{
+        background-color: rgb(177, 177, 177);
+        border: 1px solid rgb(126, 126, 126);
+        width: 35px;
+        height: 35px;
+    }
+    .selectLevel{
+        margin: 5px 0;
+    }
+</style>
+<body>
+    <div>
+        <p>Select Level</p>
+        <div>
+            <button class="selectLevel" onclick="selectBasic()">Basic</button>
+            <button class="selectLevel" onclick="selectIntermediate()">Intermediate</button>
+            <button class="selectLevel" onclick="selectExpert()">Expert</button>
+        </div>
+    </div>
+    <div class="minesArea">
+
+    </div>
+</body>
+<script src="./index.js"></script>
+</html>
