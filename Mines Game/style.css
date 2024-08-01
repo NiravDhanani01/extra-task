@@ -9,6 +9,7 @@ body{
 .minesArea{
     display:flex;
     flex-wrap: wrap;
+    user-select: none;
 }
 .minesArea .mineBtn{
     background-color: rgb(177, 177, 177);
@@ -18,4 +19,9 @@ body{
 }
 .selectLevel{
     margin: 5px 0;
+}
+
+button{
+    padding: 7px;
+    margin: 10px;
 }
