@@ -1,20 +1,23 @@
 let mineArea = document.querySelector(".minesArea");
+let unopenedCells;
 let boxes = [];
 
 const displayMineArea = (col, row) => {
   mineArea.innerHTML = "";
+  boxes = [];
+  unopenedCells = col * row;
   mineArea.style.width = col * 35 + "px";
   for (let i = 0; i < row; i++) {
-    let row = [];
+    let rowArr = [];
     for (let j = 0; j < col; j++) {
       let div = document.createElement("div");
       div.classList = "mineBtn";
-      div.setAttribute("onclick", "openPosition(event)");
+      div.setAttribute("onclick", `openPosition(event, ${row}, ${col})`);
       div.id = `${i}-${j}`;
-      row.push(`${i}-${j}`);
+      rowArr.push(`${i}-${j}`);
       mineArea.append(div);
     }
-    boxes.push(row);
+    boxes.push(rowArr);
   }
 };
 
@@ -32,12 +35,12 @@ const mineSetter = (col, row) => {
     if (!minesPosition.includes(randomId)) {
       minesPosition.push(randomId);
       document.getElementById(randomId).innerHTML = "&#128163;";
-      // document.getElementById(randomId).style.color = "transparent"
+      document.getElementById(randomId).style.color = "transparent"
     }
   }
 
   for (let item of minesPosition) {
-    let splitId = item.split("-").map(item => item);
+    let splitId = item.split("-").map((item) => item);
 
     let x = parseInt(splitId[0]);
     let y = parseInt(splitId[1]);
@@ -87,112 +90,107 @@ const setNumber = (ids) => {
   if (document.getElementById(ids) && !minesPosition.includes(ids)) {
     document.getElementById(ids).innerText =
       (parseInt(document.getElementById(ids).innerText) || 0) + 1;
-    // document.getElementById(ids).style.color = "transparent"
+    document.getElementById(ids).style.color = "transparent"
   }
 };
 
-const openPosition = (event) => {
+const openPosition = (event, row, col) => {
   let clickPosition = event.target.id;
-  let clickebox = document.getElementById(clickPosition);
 
   if (minesPosition.includes(clickPosition)) {
     for (let mine of minesPosition) {
       let mineCell = document.getElementById(mine);
-      mineCell.style.color = "black"
+      mineCell.style.color = "black";
       mineCell.style.backgroundColor = "red";
       mineCell.innerHTML = "&#128163;";
     }
-    let allBoxes = document.querySelectorAll(".mineBtn")
+    let allBoxes = document.querySelectorAll(".mineBtn");
     allBoxes.forEach((item) => {
-      item.style.pointerEvents = "none"
-    })
+      item.style.pointerEvents = "none";
+    });
     alert("Game Over");
   } else {
-    clickebox.style.backgroundColor = "lightgrey";
-    clickebox.style.color = "black";
-    clickebox.style.fontWeight = "bold";
+    openEmptyBoxes(clickPosition, row, col);
+    winningCondition();
+  }
+};
+const openEmptyBoxes = (id, row, col) => {
+  let emptyId = id.split("-");
+  let x = parseInt(emptyId[0]);
+  let y = parseInt(emptyId[1]);
+  let emptybox = document.getElementById(id);
+  
+  if (!emptybox || emptybox.style.backgroundColor === "lightgrey") {
+    return;
+  }
+  
+  emptybox.style.backgroundColor = "lightgrey";
+  emptybox.style.color = "black";
+  emptybox.style.fontWeight = "bold";
+  unopenedCells--;
+  
+  if (emptybox.innerHTML === "") {
+    let leftId = `${x}-${y - 1}`;
+    let topLeftId = `${x - 1}-${y - 1}`;
+    let bottomLeftId = `${x + 1}-${y - 1}`;
+    let topId = `${x - 1}-${y}`;
+    let bottomId = `${x + 1}-${y}`;
+    let topRightId = `${x - 1}-${y + 1}`;
+    let rightId = `${x}-${y + 1}`;
+    let bottomRightId = `${x + 1}-${y + 1}`;
 
-    if (clickebox.innerHTML == "") {
-      openEmptyBoxes(clickPosition)
+    // left side part
+    if (y > 0) {
+      openEmptyBoxes(leftId, row, col);
+    }
+    if (x > 0 && y > 0) {
+      openEmptyBoxes(topLeftId, row, col);
+    }
+    if (x < row - 1 && y > 0) {
+      openEmptyBoxes(bottomLeftId, row, col);
+    }
+
+    // middle part
+    if (x > 0) {
+      openEmptyBoxes(topId, row, col);
+    }
+    if (x < row - 1) {
+      openEmptyBoxes(bottomId, row, col);
+    }
+
+    // right side part
+    if (x > 0 && y < col - 1) {
+      openEmptyBoxes(topRightId, row, col);
+    }
+    if (y < col - 1) {
+      openEmptyBoxes(rightId, row, col);
+    }
+    if (x < row - 1 && y < col - 1) {
+      openEmptyBoxes(bottomRightId, row, col);
     }
   }
 };
 
-const openEmptyBoxes = (id) => {
-
-
-  // for (let item of minesPosition) {
-
-    //  if(item.id == id){
-      let emptyId = id.split("-")
-      let x = parseInt(emptyId[0])
-      let y = parseInt(emptyId[1])
-    
-      let emtyId = `${x}-${y}`;
-      let leftId = `${x}-${y - 1}`;
-      let topLeftId = `${x - 1}-${y - 1}`;
-      let bottomLeftId = `${x + 1}-${y - 1}`;
-      let topId = `${x - 1}-${y}`;
-      let bottomId = `${x + 1}-${y}`;
-      let topRightId = `${x - 1}-${y + 1}`;
-      let rightId = `${x}-${y + 1}`;
-      let bottomRightId = `${x + 1}-${y + 1}`;
-    
-      // left side part 
-      if (emtyId) {
-        emptyboxId(`${x}-${y}`);
-      }
-      if (y > 0) {
-        emptyboxId(leftId);
-      }
-      if (x > 0 && y > 0) {
-        emptyboxId(topLeftId);
-      }
-      if (x && y > 0) {
-        emptyboxId(bottomLeftId);
-      }
-    
-      // middel part
-      if (x > 0) {
-        emptyboxId(topId);
-      }
-      if (x) {
-        emptyboxId(bottomId);
-      }
-    
-      // right side part
-      if (x > 0 && y) {
-        emptyboxId(topRightId);
-      }
-      if (y) {
-        emptyboxId(rightId);
-      }
-      if (x && y) {
-        emptyboxId(bottomRightId);
-      }
-    //  }
-  // }
-}
-
-const emptyboxId = (id) => {
-  document.getElementById(id).style.backgroundColor = "lightgrey";
-  document.getElementById(id).style.color = "black";
-    // openEmptyBoxes(id)
-}
+const winningCondition = () => {
+  if (unopenedCells === minesPosition.length) {
+    alert("Congratulations! You won");
+    document.querySelectorAll(".mineBtn").forEach(item => {
+      item.style.pointerEvents = "none";
+    });
+  }
+};
 
 const selectBasic = () => {
   let row = 10;
   let col = 10;
-  let id = 1
   displayMineArea(col, row);
   mineSetter(col, row);
-}
+};
 
 const selectIntermediate = () => {
   let row = 16;
   let col = 16;
   displayMineArea(col, row);
-  document.getElementById(basic).setAttribute("data","true")
   mineSetter(col, row);
 };
 
@@ -207,15 +205,15 @@ const customeSelect = () => {
   let row = parseInt(prompt("Enter the number of rows"));
   let col = parseInt(prompt("Enter the number of columns"));
   if (!row || !col) {
-    selectBasic()
+    selectBasic();
   } else {
     displayMineArea(col, row);
     mineSetter(col, row);
   }
-}
+};
 
 const ResetGame = () => {
-  selectBasic()
-}
+  selectBasic();
+};
 
 selectBasic();
